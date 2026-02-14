@@ -109,12 +109,16 @@ const connectDB = async () => {
 // Start DB reconnect attempts (non-blocking)
 connectDB();
 
-// Local dev server (Vercel serverless should not call listen)
+
+
+// This condition allows your code to work on both Vercel (Serverless) and Render (Web Service)
 if (!process.env.VERCEL) {
-  app.listen(PORT, () => {
-    console.log(`🕵️ Server listening on http://localhost:${PORT}`);
+  app.listen(Number(PORT), '0.0.0.0', () => {
+    console.log(`🕵️ Detective is live on port ${PORT}`);
   });
 }
+
+
 
 // Vercel serverless handler
 export default serverless(app);
