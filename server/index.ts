@@ -51,7 +51,7 @@ app.use(cors({
   credentials: true
 }));
 // Enable pre-flight for all routes
-app.options('*', cors());
+app.options('/*any', cors());
 app.use(express.json({ limit: '256kb' }));
 
 app.get('/health', (_req: Request, res: Response) => {
