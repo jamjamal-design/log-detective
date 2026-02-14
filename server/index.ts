@@ -16,14 +16,14 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
-const CORS_CREDENTIALS = process.env.CORS_CREDENTIALS === 'true';
+const allowedOrigins = [
+  'http://localhost:3000', // For local testing
+  'https://log-detective-qt43.vercel.app' // Your actual Vercel URL
+];
 const MONGO_URI = process.env.MONGO_URI;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-if (NODE_ENV === 'production' && CORS_ORIGIN === 'http://localhost:3000') {
-  throw new Error('CORS_ORIGIN must be set in production.');
-}
+// No longer need to throw if CORS_ORIGIN is not set
 
 // 2. Middleware (The translators)
 if (NODE_ENV === 'production') {
@@ -38,7 +38,20 @@ app.use(
     legacyHeaders: false
   })
 );
-app.use(cors({ origin: CORS_ORIGIN, credentials: CORS_CREDENTIALS }));
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('The Detective says: This origin is not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+// Enable pre-flight for all routes
+app.options('*', cors());
 app.use(express.json({ limit: '256kb' }));
 
 app.get('/health', (_req: Request, res: Response) => {
