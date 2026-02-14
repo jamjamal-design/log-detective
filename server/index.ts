@@ -54,6 +54,14 @@ app.use(cors({
 app.options('/*any', cors());
 app.use(express.json({ limit: '256kb' }));
 
+app.get('/', (req, res) => {
+  res.json({
+    status: "online",
+    message: "Log Detective API is active and reaching for logs",
+    uptime: process.uptime()
+  });
+});
+
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok' });
 });
