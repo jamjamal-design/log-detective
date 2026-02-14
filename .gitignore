@@ -1,0 +1,18 @@
+node_modules/
+
+# Ignore environment files
+.env*
+.env.*.example
+
+# Node modules
+# node_modules/
+
+# Next build
+.next/
+dist/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
