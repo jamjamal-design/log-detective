@@ -19,6 +19,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:3000', // For local testing
   'https://log-detective-qt43.vercel.app', // Your actual Vercel URL
+  'https://log-detective-qt43.vercel.app/'
 ];
 const MONGO_URI = process.env.MONGO_URI;
 const NODE_ENV = process.env.NODE_ENV || 'development';
